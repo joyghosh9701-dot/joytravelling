@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Travels | Elite Global Expeditions</title>
+    
+    <!-- Fonts: Cinzel (Luxury) & Manrope (Modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- LUXURY THEME VARIABLES --- */
+        :root {
+            --gold: #d4af37;
+            --gold-gradient: linear-gradient(45deg, #d4af37, #f3e5ab, #d4af37);
+            --dark-bg: #050505;
+            --card-bg: #121212;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --glass: rgba(20, 20, 20, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Cinzel', serif; letter-spacing: 1px; }
+        img { width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; width: 100%; height: 100vh; background: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center; transition: opacity 0.5s;
+        }
+        .loader {
+            width: 60px; height: 60px; border: 3px solid transparent; border-top-color: var(--gold);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 8%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); transition: 0.4s;
+        }
+        nav.sticky {
+            background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(15px); padding: 15px 8%; border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-transform: uppercase; }
+        .logo span { color: var(--gold); }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; position: relative; }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0;
+            background: var(--gold); transition: 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; text-align: center; overflow: hidden;
+        }
+        .video-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            min-width: 100%; min-height: 100%; object-fit: cover; opacity: 0.6; z-index: -1;
+        }
+        .hero-content { z-index: 2; animation: fadeUp 1.5s ease; }
+        .hero h1 { font-size: 4rem; line-height: 1.2; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .hero p { font-size: 1.1rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; }
+        
+        .btn-gold {
+            padding: 12px 35px; border: 1px solid var(--gold); color: var(--gold);
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+            background: transparent; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .btn-gold:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); }
+
+        /* --- FOUNDER SECTION (YOUR PROFILE) --- */
+        .founder-section {
+            padding: 100px 10%; display: flex; align-items: center; gap: 80px;
+            background: linear-gradient(to right, #050505, #0a0a0a);
+        }
+        .founder-img-box {
+            position: relative; flex: 1; max-width: 400px;
+        }
+        .founder-img-box::before {
+            content: ''; position: absolute; top: -15px; left: -15px; width: 100%; height: 100%;
+            border: 2px solid var(--gold); z-index: 0;
+        }
+        .founder-img {
+            width: 100%; border-radius: 5px; position: relative; z-index: 1;
+            filter: grayscale(20%); transition: 0.5s; object-fit: cover; aspect-ratio: 3/4;
+        }
+        .founder-img:hover { filter: grayscale(0%); transform: scale(1.02); }
+        
+        .founder-text { flex: 1; }
+        .founder-text h4 { color: var(--gold); letter-spacing: 3px; margin-bottom: 10px; font-size: 0.9rem; }
+        .founder-text h2 { font-size: 3rem; margin-bottom: 20px; line-height: 1.2; }
+        .founder-text p { color: var(--text-muted); line-height: 1.8; margin-bottom: 30px; }
+        .signature { font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); font-style: italic; }
+
+        /* --- TRAVEL SHORTS (REELS STYLE) --- */
+        .shorts-section { padding: 80px 5%; background: #080808; border-top: 1px solid var(--border); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; color: #fff; }
+        .section-header span { color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; }
+
+        .shorts-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+        }
+        .short-card {
+            position: relative; border-radius: 15px; overflow: hidden; aspect-ratio: 9/16; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.4s; border: 1px solid #222;
+        }
+        .short-card video { width: 100%; height: 100%; object-fit: cover; }
+        .play-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 30px; color: #fff; background: rgba(0,0,0,0.5); width: 60px; height: 60px;
+            border-radius: 50%; display: grid; place-items: center; border: 1px solid #fff;
+        }
+        .short-card:hover { transform: translateY(-10px); border-color: var(--gold); }
+        .video-title {
+            position: absolute; bottom: 15px; left: 15px; font-size: 0.9rem; 
+            font-weight: bold; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        /* --- LUXURY PACKAGES --- */
+        .packages-section { padding: 100px 8%; }
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .package-card { background: var(--card-bg); border-radius: 5px; overflow: hidden; transition: 0.4s; }
+        .package-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .p-img { height: 250px; overflow: hidden; }
+        .p-img img { height: 100%; object-fit: cover; transition: 0.5s; }
+        .package-card:hover .p-img img { transform: scale(1.1); }
+        
+        .p-content { padding: 30px; }
+        .p-meta { display: flex; justify-content: space-between; color: var(--gold); font-size: 0.8rem; margin-bottom: 15px; }
+        .p-content h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .price { font-size: 1.2rem; color: #fff; font-weight: 600; margin-top: 15px; display: block; }
+
+        /* --- MEGA FOOTER --- */
+        footer { background: #000; padding: 80px 8% 30px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 50px; }
+        .footer-logo { font-size: 2rem; color: #fff; font-family: 'Cinzel'; margin-bottom: 20px; display: block; }
+        .footer-col h4 { color: #fff; margin-bottom: 20px; }
+        .footer-col ul li { margin-bottom: 15px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; }
+        .footer-col ul li i { width: 25px; color: var(--gold); }
+        
+        .footer-col a { color: var(--text-muted); transition: 0.3s; }
+        .footer-col a:hover { color: var(--gold); padding-left: 5px; }
+
+        .whatsapp-float {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: #25d366; color: #fff; border-radius: 50%; display: grid; place-items: center;
+            font-size: 30px; z-index: 999; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .founder-section { flex-direction: column; text-align: center; }
+            .founder-img-box { margin-bottom: 40px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader"><div class="loader"></div></div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="#" class="logo">Joy <span>Travels</span></a>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#about">Founder</a>
+            <a href="#shorts">Diaries</a>
+            <a href="#packages">Destinations</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="https://wa.me/917001939659" class="btn-gold" style="font-size: 0.7rem;">Concierge</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <video autoplay muted loop playsinline class="video-bg">
+            <source src="https://videos.pexels.com/video-files/2169880/2169880-hd_1920_1080_30fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <p>Welcome to the World of Luxury</p>
+            <h1>Your Journey,<br>Our <span style="color: var(--gold);">Passion</span></h1>
+            <a href="#packages" class="btn-gold">Explore Collections</a>
+        </div>
+    </header>
+
+    <!-- FOUNDER SECTION -->
+    <section class="founder-section" id="about">
+        <div class="founder-img-box">
+            <!-- Updated with your profile picture -->
+            <img src="https://i.ibb.co/WX8XGLL/IMG-20260215-002846.png" alt="Founder Joy Travels" class="founder-img">
+        </div>
+        <div class="founder-text">
+            <h4>MEET THE VISIONARY</h4>
+            <h2>Crafting Memories <br> Since 2024</h2>
+            <p>
+                Hello, I am the founder of Joy Travels. My mission is not just to take you to places, but to help you experience the soul of every destination. 
+                Whether it's the serene valleys of Kashmir or the vibrant beaches of Thailand, I personally curate every itinerary to ensure perfection.
+            </p>
+            <p>
+                Join me in exploring the unseen beauty of the world with comfort, luxury, and a personal touch.
+            </p>
+            <div class="signature">Joy Travels</div>
+            <br>
+            <a href="https://wa.me/917001939659" class="btn-gold">Chat With Me</a>
+        </div>
+    </section>
+
+    <!-- TRAVEL SHORTS (FIXED: With Poster Images) -->
+    <section class="shorts-section" id="shorts">
+        <div class="section-header">
+            <span>Visual Stories</span>
+            <h2>Travel Diaries</h2>
+        </div>
+        
+        <div class="shorts-grid">
+            <!-- Video 1 -->
+            <div class="short-card">
+                <video loop muted playsinline preload="auto" poster="https://images.pexels.com/photos/1670187/pexels-photo-1670187.jpeg?auto=compress&cs=tinysrgb&w=600" onmouseover="this.play()" onmouseout="this.pause()">
+                    <source src="https://videos.pexels.com/video-files/4057322/4057322-hd_1080_1920_30fps.mp4" type="video/mp4">
+                </video>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-title">Mountains 🏔️</div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="short-card">
+                <video loop muted playsinline preload="auto" poster="https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=600" onmouseover="this.play()" onmouseout="this.pause()">
+                    <source src="https://videos.pexels.com/video-files/5047895/5047895-hd_1080_1920_30fps.mp4" type="video/mp4">
+                </video>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-title">Ocean Vibes 🌊</div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="short-card">
+                <video loop muted playsinline preload="auto" poster="https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=600" onmouseover="this.play()" onmouseout="this.pause()">
+                    <source src="https://videos.pexels.com/video-files/3753361/3753361-hd_1080_1920_25fps.mp4" type="video/mp4">
+                </video>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-title">City Lights 🌃</div>
+            </div>
+
+            <!-- Video 4 -->
+            <div class="short-card">
+                <video loop muted playsinline preload="auto" poster="https://images.pexels.com/photos/247600/pexels-photo-247600.jpeg?auto=compress&cs=tinysrgb&w=600" onmouseover="this.play()" onmouseout="this.pause()">
+                    <source src="https://videos.pexels.com/video-files/4232367/4232367-hd_1080_1920_30fps.mp4" type="video/mp4">
+                </video>
+                <div class="play-btn"><i class="fas fa-play"></i></div>
+                <div class="video-title">Jungle Safari 🐘</div>
+            </div>
+        </div>
+        <p style="text-align:center; color:#666; margin-top:20px; font-size:0.8rem;">*Hover to play videos</p>
+    </section>
+
+    <!-- PACKAGES SECTION -->
+    <section class="packages-section" id="packages">
+        <div class="section-header">
+            <span>Exclusive Offers</span>
+            <h2>Curated Destinations</h2>
+        </div>
+        <div class="package-grid">
+            <!-- Card 1 -->
+            <div class="package-card">
+                <div class="p-img">
+                    <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?ixlib=rb-4.0.3" alt="Kashmir">
+                </div>
+                <div class="p-content">
+                    <div class="p-meta">
+                        <span><i class="fas fa-clock"></i> 5 Days</span>
+                        <span><i class="fas fa-star"></i> 5.0</span>
+                    </div>
+                    <h3>Royal Kashmir</h3>
+                    <span class="price">Starting ₹14,999</span>
+                    <a href="https://wa.me/917001939659" class="btn-gold" style="width:100%; margin-top:15px; display:block; text-align:center;">Book Now</a>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="package-card">
+                <div class="p-img">
+                    <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?ixlib=rb-4.0.3" alt="Thailand">
+                </div>
+                <div class="p-content">
+                    <div class="p-meta">
+                        <span><i class="fas fa-clock"></i> 6 Days</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <h3>Exotic Thailand</h3>
+                    <span class="price">Starting ₹29,999</span>
+                    <a href="https://wa.me/917001939659" class="btn-gold" style="width:100%; margin-top:15px; display:block; text-align:center;">Book Now</a>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="package-card">
+                <div class="p-img">
+                    <img src="https://images.unsplash.com/photo-1589979481223-deb893043163?ixlib=rb-4.0.3" alt="Andaman">
+                </div>
+                <div class="p-content">
+                    <div class="p-meta">
+                        <span><i class="fas fa-clock"></i> 5 Days</span>
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <h3>Andaman Escape</h3>
+                    <span class="price">Starting ₹18,999</span>
+                    <a href="https://wa.me/917001939659" class="btn-gold" style="width:100%; margin-top:15px; display:block; text-align:center;">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEGA FOOTER (Updated Contact) -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <!-- Brand Column -->
+            <div>
+                <span class="footer-logo">JOY TRAVELS</span>
+                <p style="color:#aaa; line-height:1.6;">
+                    Redefining luxury travel management. We don't just book trips; we craft experiences that last a lifetime.
+                </p>
+                <div style="margin-top:20px;">
+                    <i class="fab fa-instagram" style="color:#fff; margin-right:15px; font-size:1.2rem;"></i>
+                    <i class="fab fa-facebook" style="color:#fff; margin-right:15px; font-size:1.2rem;"></i>
+                    <i class="fab fa-twitter" style="color:#fff; font-size:1.2rem;"></i>
+                </div>
+            </div>
+
+            <!-- Links Column 1 -->
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Founder</a></li>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press & Media</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div class="footer-col">
+                <h4>Get in Touch</h4>
+                <ul>
+                    <li>
+                        <i class="fas fa-phone-alt"></i> 
+                        +91 70019 39659
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i> 
+                        joyghosh9701@gmail.com
+                    </li>
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i> 
+                        West Bengal, India
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="border-top:1px solid #222; padding-top:20px; text-align:center; color:#555; font-size:0.8rem;">
+            &copy; 2026 Joy Travels Luxury Group. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/917001939659" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Remove Preloader
+        window.onload = function() {
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 500);
+        }
+
+        // Sticky Nav
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('sticky', window.scrollY > 50);
+        });
+    </script>
+
+</body>
+</html>
